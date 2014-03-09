@@ -2,7 +2,6 @@
 
 var availableTables = ko.observableArray(['1','2','3','4','5','6','7','8','9','10']);
 var availableSeats = ko.observableArray(['1','2','3','4']);
-
 // Diagnostics
 socket.on('error', function(err) {
 	console.log(err);
@@ -58,9 +57,15 @@ ko.applyBindings(new UnfilledOrdersViewModel(), document.getElementById('backlog
 
 // Delete an order
 function delete_order(data){
-	socket.emit('delete_order', data.order_no);
+	if (confirm('Are you sure you want to delete this order?')){
+		if(confirm('Are you REALLY sure you want to delete this order?')){
+			socket.emit('delete_order', data.order_no);
+		}
+	}
 }
 // Mark an order fulfilled
 function mark_fulfilled(data){
-	socket.emit('mark_fulfilled', data.order_no);
+	if(confirm('Confirm marking this order as fulfilled?')) {
+		socket.emit('mark_fulfilled', data.order_no);
+	}
 }
