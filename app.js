@@ -11,7 +11,7 @@ server.listen(8000);
 
 // PostgreSQL client
 var pg = require('pg');
-var conString = "postgres://fuu:kenkajoutou@localhost/maidcafe";
+var conString = process.argv[2];
 var client = new pg.Client(conString);
 client.connect();
 
