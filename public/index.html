@@ -5,6 +5,8 @@
 		<title>MSAC Maid Cafe Kitchen Dashboard</title>
 		<!-- jQuery -->
 		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+		<!-- Notify.js -->
+		<script src='js/notify.min.js'></script>
 		<!-- Knockout -->
 		<script type='text/javascript' src='http://ajax.aspnetcdn.com/ajax/knockout/knockout-3.0.0.js'></script>
 		<!-- Bootstrap -->
@@ -15,9 +17,6 @@
 		<script src="js/socket-client.js" defer="defer"></script>
 	</head>
 	<body onload=get_menu()>
-		<!-- Message area -->
-		<div id="alert_container" class="alert alert-dismissable col-xs-12" style="display:none">
-		</div>
 		<!-- Orders -->
 		<div id="orders_container" class="panel panel-warning col-sm-4">
 			<div class="panel-heading">

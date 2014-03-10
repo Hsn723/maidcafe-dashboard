@@ -5,24 +5,10 @@ var availableSeats = ko.observableArray(['1','2','3','4']);
 // Diagnostics
 socket.on('error', function(err) {
 	console.log(err);
-	$("#alert_container").addClass('alert-danger');
-	$("#alert_container").text(err);
-	$("#alert_container").fadeIn();
-	setInterval(function() {
-		$("#alert_container").fadeOut();
-		$("#alert_container").removeClass('alert-danger');
-		$("#alert_container").text('');
-	}, 1000);
+	$.notify(err, 'error');
 });
 socket.on('success', function(msg) {
-	$("#alert_container").addClass('alert-success');
-	$("#alert_container").text(msg);
-	$("#alert_container").fadeIn();
-	setInterval(function() {
-		$("#alert_container").fadeOut();
-		$("#alert_container").removeClass('alert-success');
-		$("#alert_container").text('');
-	}, 1000);
+	$.notify(msg, 'success');
 });
 
 // Menu
