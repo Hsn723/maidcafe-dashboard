@@ -18,7 +18,7 @@
 	</head>
 	<body onload=get_menu()>
 		<!-- Orders -->
-		<div id="orders_container" class="panel panel-warning col-sm-4">
+		<div id="orders_container" class="panel panel-warning col-sm-5">
 			<div class="panel-heading">
 				<h1><span class="glyphicon glyphicon-log-in"></span> New Orders</h1>
 			</div>
@@ -26,14 +26,14 @@
 				<form class="form-horizontal" role="form">
 					<div class="form-group">
 						<label for="selectTable" class="col-sm-3 control-label">Select Table: </label>
-						<div class="col-sm-2">
+						<div class="col-sm-3">
 							<select id="table_selector" class="form-control" data-bind="foreach: availableTables">
 								<option data-bind="text: $data"></option>
 							</select>
 						</div>
 
 						<label for="selectSeat" class="col-sm-3 control-label">Select Seat: </label>
-						<div class="col-sm-2">
+						<div class="col-sm-3">
 							<select id="seat_selector" class="form-control" data-bind="foreach: availableSeats">
 								<option data-bind="text: $data"></option>
 							</select>
@@ -58,7 +58,7 @@
 		</div>
 		
 		<!-- Backlog -->
-		<div id="backlog_container" class="panel panel-danger col-sm-8">
+		<div id="backlog_container" class="panel panel-danger col-sm-7">
 			<div class="panel-heading">
 				<h1><span class="glyphicon glyphicon-log-out"></span> Pending Orders</h1>
 			</div>

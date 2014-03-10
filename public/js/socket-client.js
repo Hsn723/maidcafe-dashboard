@@ -8,7 +8,12 @@ socket.on('error', function(err) {
 	$.notify(err, 'error');
 });
 socket.on('success', function(msg) {
-	$.notify(msg, 'success');
+	$.notify(msg, {
+		className: 'success',
+		globalPosition: 'left top',
+		style: 'bootstrap',
+		autoHideDelay: '2000'
+	});
 });
 
 // Menu
