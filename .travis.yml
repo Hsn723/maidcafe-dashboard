@@ -5,4 +5,5 @@ node_js:
 addons:
   postgresql: 9.3
 before_script:
-  - psql -c 'CREATE DATABASE maidcafe;' -U postgres 
+  - psql -c 'CREATE DATABASE maidcafe;' -U postgres
+  - psql maidcafe < test/test.sql
