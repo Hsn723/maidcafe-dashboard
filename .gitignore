@@ -19,3 +19,7 @@ build
 .grunt
 
 node_modules
+*.pem
+*.crt
+*.key
+*.pfx

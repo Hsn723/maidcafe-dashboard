@@ -1,9 +1,17 @@
 ﻿var express = require('express');
 var app = express();
-
-var server = require('http').createServer(app)
+var httpapp = express();
+var fs = require('fs');
+var options = {
+	key: fs.readFileSync('/etc/nginx/www_kagehoshi.com/ssl.key'),
+	cert: fs.readFileSync('/etc/nginx/www_kagehoshi.com/ssl-unified.crt'),
+	requestCert: true
+}
+var http = require('http').createServer(httpapp);
+var server = require('https').createServer(options, app)
 	, io = require('socket.io').listen(server);
 server.listen(8000);
+http.listen(8001);
 
 // PostgreSQL client
 var pg = require('pg');
@@ -11,6 +19,9 @@ var conString = process.argv[2];
 var client = new pg.Client(conString);
 client.connect();
 
+httpapp.get('*', function(req,res) {
+	res.redirect('https://kagehoshi.com:8000'+req.url);
+});
 app.get('/', function(req, res) {
 	res.sendfile(__dirname + '/index.html');
 });

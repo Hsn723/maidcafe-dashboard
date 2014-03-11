@@ -1,11 +1,16 @@
-﻿var socket = io.connect('http://kagehoshi.com:8000');
+﻿var socket = io.connect('https://kagehoshi.com:8000');
 
 var availableTables = ko.observableArray(['1','2','3','4','5','6','7','8','9']);
 var availableSeats = ko.observableArray(['1','2','3','4']);
 // Diagnostics
 socket.on('error', function(err) {
 	console.log(err);
-	$.notify(err, 'error');
+	$.notify(err, {
+		className: 'error',
+		globalPosition: 'left top',
+		style: 'bootstrap',
+		autoHideDelay: '2000'
+	});
 });
 socket.on('success', function(msg) {
 	$.notify(msg, {
