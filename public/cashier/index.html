@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>MSAC Maid Cafe Cashier Dashboard</title>
+		<!-- jQuery -->
+		<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+		<!-- Notify.js -->
+		<script src='../js/notify.min.js'></script>
+		<!-- Knockout -->
+		<script type='text/javascript' src='//ajax.aspnetcdn.com/ajax/knockout/knockout-3.0.0.js'></script>
+		<!-- Bootstrap -->
+		<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+		<!-- Socket.io -->
+		<script src="https://kagehoshi.com:8000/socket.io/socket.io.js"></script>
+		<script src="../js/cashier.js" defer="defer"></script>
+	</head>
+	<body onload=get_unbilled_receipts()>
+		<!-- Unbilled receipts -->
+		<div id="unbilled_receipts_container" class="panel panel-danger col-sm-4">
+			<div class="panel-heading">
+				<h1><span class="glyphicon glyphicon-list"></span> Unbilled Receipts</h1>
+			</div>
+			<table class="table">
+				<thead>
+					<tr><th>Receipt</th><th>Table</th><th>Total</th><th>Balance</th><th>&nbsp; </th></tr>
+				</thead>
+				<tbody data-bind="foreach: unbilled_receipts">
+					<tr>
+						<td data-bind="text: receipt_no"></td>
+						<td data-bind="text: table_no"></td>
+						<td data-bind="text: total_amt"></td>
+						<td data-bind="text: balance_amt"></td>
+						<td>
+							<button data-bind="click: get_orders_by_receipt.bind($data)">
+								<span class="glyphicon glyphicon-chevron-right"></span>
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- Orders -->
+		<div id="orders_container" class="panel panel-success col-sm-4">
+			<div class="panel-heading">
+				<h1><span class="glyphicon glyphicon-shopping-cart"></span>Unbilled Orders</h1>
+			</div>
+			<table class="table">
+				<thead>
+					<tr><th>&nbsp; </th><th>Order</th><th>Table</th><th>Seat</th><th>Name</th><th>Price</th></tr>
+				</thead>
+				<tbody data-bind="foreach: orders">
+					<tr>
+						<td><input type="checkbox" class="ordercheckbox" data-bind="checkedValue: order_no, checked: $root.selected_orders"></input></td>
+						<td data-bind="text: order_no"></td>
+						<td data-bind="text: table_no"></td>
+						<td data-bind="text: seat_no"></td>
+						<td data-bind="text: menu_item"></td>
+						<td data-bind="text: item_price"></td>
+					</tr>
+				</tbody>
+			</table>
+			<table class="table">
+				<tbody>
+					<tr>
+						<td>Subtotal: </td>
+						<td data-bind="text: subtotal"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>

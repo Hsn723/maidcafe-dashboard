@@ -25,10 +25,13 @@ httpapp.get('*', function(req,res) {
 app.get('/', function(req, res) {
 	res.sendfile(__dirname + '/index.html');
 });
+app.get('cashier', function(req, res) {
+	res.sendfile(__dirname + '/index.html');
+});
 
 // Socket.io
 io.sockets.on('connection', function(socket) {
-
+	// Kitchen
 	socket.on('get_menu', function() {
 		client.query('SELECT * FROM get_menu()', function(err, result) {
 			if(err || result.rowCount === 0){
@@ -58,7 +61,7 @@ io.sockets.on('connection', function(socket) {
 		});
 	});
 	
-	socket.on('get_unfilled_orders', function(data) {
+	socket.on('get_unfilled_orders', function() {
 		client.query('SELECT * FROM get_unfilled_orders()', function(err, result) {
 			if(err){
 				socket.emit('error', 'ERROR: getting unfilled orders');
@@ -88,4 +91,32 @@ io.sockets.on('connection', function(socket) {
 		});
 	});
 	
+	// Cashier
+	socket.on('get_unbilled_receipts', function() {
+		client.query('SELECT * FROM get_unbilled_receipts()', function(err, res) {
+			if(err){
+				socket.emit('error', 'ERROR: getting unbilled receipts');
+				return console.error('error getting unbilled receipts', err);
+			}
+			socket.emit('unbilled_receipts_data', res.rows);
+		});
+	});
+	socket.on('get_orders_by_receipt', function(data) {
+		client.query('SELECT * FROM get_orders_by_receipt($1)', [data], function(err, res) {
+			if(err){
+				socket.emit('error', 'ERROR: getting orders');
+				return console.error('error getting orders', err);
+			}
+			socket.emit('orders_data', res.rows);
+		});
+	});
+	socket.on('get_price', function(data) {
+		client.query('SELECT * FROM get_price($1)', [data], function(err, res) {
+			if(err){
+				socket.emit('error', 'ERROR: getting price');
+				return console.error('error getting price', err);
+			}
+			socket.emit('price_data', res.rows);
+		});
+	});
 });
