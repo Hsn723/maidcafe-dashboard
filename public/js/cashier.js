@@ -39,22 +39,38 @@ var OrdersViewModel = function(receipt_no){
 	var self = this;
 	socket.on('orders_data', function(data) {
 		self.orders(data);
+		socket.emit('get_receipt_by_id', receipt_no);
 	});
 	self.orders = ko.observableArray([]);
 	socket.emit('get_orders_by_receipt', receipt_no);
 	self.subtotal = 0;
 };
 
+var TotalsViewModel = function(){
+	var self = this;
+	socket.on('receipt_data', function(data) {
+		self.total(data[0].balance_amt);
+	});
+	self.subtotal = ko.observable();
+	self.total = ko.observable();
+};
+
 function get_orders_by_receipt(data){
 	//socket.emit('get_orders_by_receipt', data.receipt_no);
 	try{
 		ko.applyBindings(new OrdersViewModel(data.receipt_no), document.getElementById('orders_container'));
+		ko.applyBindings(new TotalsViewModel(data.receipt_no), document.getElementById('totals_container'));
 	} catch(err) {}
 }
 
+
 /*
-socket.on('orders_data', function(data) {
-	ko.applyBindings({
-		orders: data
-		}, document.getElementById("orders_container"));
-});*/
+var ReceiptsViewModel = function(){
+	var self = this;
+	socket.on('receipt_data', function(data) {
+		self.receipt(data[0]);
+		console.log(data[0]);
+	});
+	self.receipt = ko.observable();
+};
+ko.applyBindings(new ReceiptsViewModel(), document.getElementById('total_row'));*/

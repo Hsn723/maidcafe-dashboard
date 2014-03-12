@@ -119,4 +119,13 @@ io.sockets.on('connection', function(socket) {
 			socket.emit('price_data', res.rows);
 		});
 	});
+	socket.on('get_receipt_by_id', function(data) {
+		client.query('SELECT * FROM get_receipt_by_id($1)', [data], function(err, res) {
+			if(err){
+				socket.emit('error', 'ERROR: getting receipt');
+				return console.error('error getting receipt', err);
+			}
+			socket.emit('receipt_data', res.rows);
+		});
+	});
 });
