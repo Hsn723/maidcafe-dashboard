@@ -18,7 +18,7 @@
 	</head>
 	<body onload=get_menu()>
 		<!-- Orders -->
-		<div id="orders_container" class="panel panel-warning col-sm-5">
+		<div id="orders_container" class="panel panel-info col-sm-5">
 			<div class="panel-heading">
 				<h1><span class="glyphicon glyphicon-log-in"></span> New Orders</h1>
 			</div>
@@ -47,7 +47,7 @@
 						<td data-bind="text: id"></td>
 						<td data-bind="text: menu_item"></td>
 						<td>
-							<button data-bind="click: add_order.bind($data)">
+							<button type="button" class="btn btn-primary btn-xs" data-bind="click: add_order.bind($data)">
 								<span class="glyphicon glyphicon-plus">
 								</span>
 							</button>
@@ -58,7 +58,7 @@
 		</div>
 		
 		<!-- Backlog -->
-		<div id="backlog_container" class="panel panel-danger col-sm-7">
+		<div id="backlog_container" class="panel panel-success col-sm-7">
 			<div class="panel-heading">
 				<h1><span class="glyphicon glyphicon-log-out"></span> Pending Orders</h1>
 			</div>
@@ -73,10 +73,10 @@
 						<td data-bind="text: seat_no"></td>
 						<td data-bind="text: menu_item"></td>
 						<td>
-							<button data-bind="click: mark_fulfilled.bind($data)">
+							<button type="button" class="btn btn-success btn-xs" data-bind="click: mark_fulfilled.bind($data)">
 								<span class="glyphicon glyphicon-ok"></span>
 							</button>
-							<button data-bind="click: delete_order.bind($data)">
+							<button type="button" class="btn btn-danger btn-xs" data-bind="click: delete_order.bind($data)">
 								<span class="glyphicon glyphicon-remove"></span>
 							</button>
 						</td>

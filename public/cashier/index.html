@@ -20,7 +20,7 @@
 		<!-- Unbilled receipts -->
 		<div id="unbilled_receipts_container" class="panel panel-danger col-sm-5">
 			<div class="panel-heading">
-				<h1><span class="glyphicon glyphicon-list"></span> Unbilled Receipts</h1>
+				<h1><span class="glyphicon glyphicon-list"></span> Receipts</h1>
 			</div>
 			<table class="table">
 				<thead>
@@ -33,7 +33,7 @@
 						<td data-bind="text: total_amt"></td>
 						<td data-bind="text: balance_amt"></td>
 						<td>
-							<button data-bind="click: get_orders_by_receipt.bind($data)">
+							<button type="button" class="btn btn-default btn-xs" data-bind="click: get_orders_by_receipt.bind($data)">
 								<span class="glyphicon glyphicon-chevron-right"></span>
 							</button>
 						</td>
@@ -44,7 +44,7 @@
 		<!-- Orders -->
 		<div id="orders_container" class="panel panel-success col-sm-5">
 			<div class="panel-heading">
-				<h1><span class="glyphicon glyphicon-shopping-cart"></span>Unbilled Orders</h1>
+				<h1><span class="glyphicon glyphicon-shopping-cart"></span> Orders</h1>
 			</div>
 			<table class="table">
 				<thead>
@@ -52,7 +52,7 @@
 				</thead>
 				<tbody data-bind="foreach: orders">
 					<tr>
-						<td><input type="checkbox" class="ordercheckbox" data-bind="checkedValue: order_no, checked: $root.selected_orders"></input></td>
+						<td><input type="checkbox" class="ordercheckbox" data-bind="checkedValue: order_no, click: $parent.order_selection.bind($data)"></input></td>
 						<td data-bind="text: order_no"></td>
 						<td data-bind="text: table_no"></td>
 						<td data-bind="text: seat_no"></td>
@@ -61,19 +61,25 @@
 					</tr>
 				</tbody>
 			</table>
-		</div>
-		<div id="totals_container" class="panel panel-info col-sm-2">
-			<div class="panel-heading">
-				<h1><span class="glyphicon glyphicon-usd"></span> Totals</h1>
-			</div>
+			<hr />
 			<table class="table">
 				<tr>
 					<td>Subtotal: </td>
-					<td></td>
+					<td data-bind="text: subtotal"></td>
+					<td>
+						<button type="button" class="btn btn-default btn-xs" data-bind="click: mark_paid">
+							Paid
+						</button>
+					</td>
 				</tr>
 				<tr>
 					<td>Total: </td>
 					<td data-bind="text: total"></td>
+					<td>
+						<button type="button" class="btn btn-default btn-xs" data-bind="click: mark_billed">
+							Paid
+						</button>
+					</td>
 				</tr>
 			</table>
 		</div>
