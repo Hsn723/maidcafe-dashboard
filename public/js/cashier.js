@@ -1,7 +1,7 @@
 var socket = io.connect('https://kagehoshi.com:8000');
 
 // Diagnostics
-socket.on('cashier_error', function(err) {
+socket.on('error', function(err) {
 	console.log(err);
 	$.notify(err, {
 		className: 'error',
@@ -63,6 +63,7 @@ var OrdersViewModel = function(){
 	self.subtotal = ko.computed(function() {
 		return '$' + self.subtotal_value();
 	}), self;
+	
 	self.total = ko.observable();
 	
 	self.order_selection = function(data, event) {
@@ -96,17 +97,47 @@ var OrdersViewModel = function(){
 		self.Clear();
 		self.orders(data);
 		socket.emit('get_receipt_by_id', self.receipt_no());
+		socket.emit('get_seats', self.receipt_no());
 	});
 	
 	socket.on('receipt_data', function(data) {
 		self.total(data[0].balance_amt);
 	});
+	
 };
 var _OrdersViewModel = new OrdersViewModel();
+
+// Subtotals
+var SubtotalsViewModel = function(){
+	var self = this;
+	self.seats = ko.observableArray([]);
+	self.selected_seat = ko.observable();
+	self.subtotal = ko.observable(parseFloat(0.00).toFixed(2));
+	
+	self.selected_seat.subscribe(function(val) {
+		if(val > 0) {
+			socket.emit('get_subtotal', {table_no: _OrdersViewModel.table_no(), seat_no: val});
+		}
+	});
+	self.mark_seat_paid = function() {
+		socket.emit('mark_seat_paid', {receipt_no: _OrdersViewModel.receipt_no(), seat_no: self.selected_seat()});
+	};
+	
+	socket.on('subtotal_data', function(data){
+		self.subtotal(data[0].subtotal);
+	});
+	socket.on('seats_data', function(data){
+		self.subtotal(parseFloat(0.00).toFixed(2));
+		self.seats(data);
+	});
+	socket.emit('get_seats', _OrdersViewModel.receipt_no());
+};
+var _SubtotalsViewModel = new SubtotalsViewModel();
 
 function get_unbilled_receipts(){
 	ko.applyBindings(new UnbilledReceiptsViewModel(), document.getElementById('unbilled_receipts_container'));
 	ko.applyBindings(_OrdersViewModel, document.getElementById('orders_container'));
+	ko.applyBindings(_SubtotalsViewModel, document.getElementById('subtotals_container'));
 }
 
 function get_orders_by_receipt(data){

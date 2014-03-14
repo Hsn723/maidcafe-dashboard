@@ -83,5 +83,34 @@
 				</tr>
 			</table>
 		</div>
+		
+		<!-- Subtotals -->
+		<div id="subtotals_container" class="panel panel-warning col-sm-2">
+			<div class="panel-heading">
+				<h1> Subtotals</h1>
+			</div>
+			<div class="panel-body">
+				<form class="form-horizontal" role="form">
+					<select id="seat_selector" class="form-control" data-bind="
+						options: seats,
+						optionsText: 'seat_no',
+						optionsCaption: 'Seat...',
+						optionsValue: 'seat_no',
+						value: selected_seat">
+						</select>
+				</form>
+			</div>
+			<table class="table">
+				<tr>
+					<td>Subtotal: </td>
+					<td data-bind="text: subtotal"></td>
+					<td>
+						<button type="button" class="btn btn-default btn-xs" data-bind="click: mark_seat_paid">
+							Paid
+						</button>
+					</td>
+				</tr>
+			</table>
+		</div>
 	</body>
 </html>

@@ -98,7 +98,7 @@ io.sockets.on('connection', function(socket) {
 	socket.on('get_unbilled_receipts', function() {
 		client.query('SELECT * FROM get_unbilled_receipts()', function(err, res) {
 			if(err){
-				socket.emit('cashier_error', 'ERROR: getting unbilled receipts');
+				socket.emit('error', 'ERROR: getting unbilled receipts');
 				return console.error('error getting unbilled receipts', err);
 			}
 			socket.emit('unbilled_receipts_data', res.rows);
@@ -108,7 +108,7 @@ io.sockets.on('connection', function(socket) {
 	socket.on('get_orders_by_receipt', function(data) {
 		client.query('SELECT * FROM get_orders_by_receipt($1)', [data], function(err, res) {
 			if(err){
-				socket.emit('cashier_error', 'ERROR: getting orders');
+				socket.emit('error', 'ERROR: getting orders');
 				return console.error('error getting orders', err);
 			}
 			socket.emit('orders_data', res.rows);
@@ -118,7 +118,7 @@ io.sockets.on('connection', function(socket) {
 	socket.on('get_receipt_by_id', function(data) {
 		client.query('SELECT * FROM get_receipt_by_id($1)', [data], function(err, res) {
 			if(err){
-				socket.emit('cashier_error', 'ERROR: getting receipt');
+				socket.emit('error', 'ERROR: getting receipt');
 				return console.error('error getting receipt', err);
 			}
 			socket.emit('receipt_data', res.rows);
@@ -128,7 +128,7 @@ io.sockets.on('connection', function(socket) {
 	socket.on('mark_paid', function(data) {
 		client.query('SELECT mark_paid($1::int[])', [data], function(err, res) {
 			if(err){
-				socket.emit('cashier_error', 'ERROR: marking orders paid');
+				socket.emit('error', 'ERROR: marking orders paid');
 				return console.error('error marking orders paid', err);
 			}
 			socket.emit('receipts_heartbeat', {});
@@ -139,11 +139,43 @@ io.sockets.on('connection', function(socket) {
 	socket.on('mark_billed', function(data) {
 		client.query('SELECT mark_billed($1)', [data], function(err, res) {
 			if(err){
-				socket.emit('cashier_error', 'ERROR: marking receipt paid');
+				socket.emit('error', 'ERROR: marking receipt paid');
 				return console.error('error marking receipt paid', err);
 			}
 			socket.emit('receipts_heartbeat', {});
 			socket.emit('success', 'DONE: receipt billed');
+		});
+	});
+	
+	// subtotals
+	socket.on('get_seats', function(data) {
+		client.query('SELECT * FROM get_seats($1)', [data], function(err, res) {
+			if(err){
+				socket.emit('error', 'ERROR: getting seats');
+				return console.error('error getting seats', err);
+			}
+			socket.emit('seats_data', res.rows);
+		});
+	});
+	socket.on('get_subtotal', function(data) {
+		client.query('SELECT item_price AS subtotal FROM get_subtotal($1, $2) WHERE order_no = 0'
+		, [data.table_no, data.seat_no]
+		, function(err, res) {
+			if(err){
+				socket.emit('error', 'ERROR: getting subtotal');
+				return console.error('error getting subtotal', err);
+			}
+			socket.emit('subtotal_data', res.rows);
+		});
+	});
+	socket.on('mark_seat_paid', function(data) {
+		client.query('SELECT mark_seat_paid($1, $2)', [data.receipt_no, data.seat_no], function(err, res) {
+			if(err){
+				socket.emit('error', 'ERROR: marking seat paid');
+				return console.error('error marking seat paid', err);
+			}
+			socket.emit('receipts_heartbeat', {});
+			socket.emit('success', 'DONE: seat paid');
 		});
 	});
 });
