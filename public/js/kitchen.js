@@ -1,7 +1,7 @@
 ﻿var socket = io.connect('https://kagehoshi.com:8000');
 
-var availableTables = ko.observableArray(['1','2','3','4','5','6','7','8','9']);
-var availableSeats = ko.observableArray(['1','2','3','4']);
+var availableTables = ko.observableArray(['1','2','3','4','5','6','7','8','9', '10', '11', '12', '13', '14', '15']);
+var availableSeats = ko.observableArray(['1','2','3','4', '5', '6']);
 // Diagnostics
 socket.on('error', function(err) {
 	console.log(err);
